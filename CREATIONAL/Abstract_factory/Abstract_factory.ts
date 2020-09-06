@@ -1,4 +1,3 @@
-
 interface AbstractFactory {
   createProductA(): AbstractProductA;
 
@@ -7,21 +6,21 @@ interface AbstractFactory {
 
 class ConcreteFactory1 implements AbstractFactory {
   public createProductA(): AbstractProductA {
-      return new ConcreteProductA1();
+    return new ConcreteProductA1();
   }
 
   public createProductB(): AbstractProductB {
-      return new ConcreteProductB1();
+    return new ConcreteProductB1();
   }
 }
 
 class ConcreteFactory2 implements AbstractFactory {
   public createProductA(): AbstractProductA {
-      return new ConcreteProductA2();
+    return new ConcreteProductA2();
   }
 
   public createProductB(): AbstractProductB {
-      return new ConcreteProductB2();
+    return new ConcreteProductB2();
   }
 }
 
@@ -31,48 +30,45 @@ interface AbstractProductA {
 
 class ConcreteProductA1 implements AbstractProductA {
   public usefulFunctionA(): string {
-      return 'The result of the product A1.';
+    return "The result of the product A1.";
   }
 }
 
 class ConcreteProductA2 implements AbstractProductA {
   public usefulFunctionA(): string {
-      return 'The result of the product A2.';
+    return "The result of the product A2.";
   }
 }
 
 interface AbstractProductB {
-
   usefulFunctionB(): string;
 
   anotherUsefulFunctionB(collaborator: AbstractProductA): string;
 }
 
 class ConcreteProductB1 implements AbstractProductB {
-
   public usefulFunctionB(): string {
-      return 'The result of the product B1.';
+    return "The result of the product B1.";
   }
 
   public anotherUsefulFunctionB(collaborator: AbstractProductA): string {
-      const result = collaborator.usefulFunctionA();
-      return `The result of the B1 collaborating with the (${result})`;
+    const result = collaborator.usefulFunctionA();
+    return `The result of the B1 collaborating with the (${result})`;
   }
 }
 
 class ConcreteProductB2 implements AbstractProductB {
-
   public usefulFunctionB(): string {
-      return 'The result of the product B2.';
+    return "The result of the product B2.";
   }
 
   public anotherUsefulFunctionB(collaborator: AbstractProductA): string {
-      const result = collaborator.usefulFunctionA();
-      return `The result of the B2 collaborating with the (${result})`;
+    const result = collaborator.usefulFunctionA();
+    return `The result of the B2 collaborating with the (${result})`;
   }
 }
 
-function clientCode(factory: AbstractFactory) {
+function clientCode2(factory: AbstractFactory) {
   const productA = factory.createProductA();
   const productB = factory.createProductB();
 
@@ -80,10 +76,19 @@ function clientCode(factory: AbstractFactory) {
   console.log(productB.anotherUsefulFunctionB(productA));
 }
 
-console.log('Client: Testing client code with the first factory type...');
-clientCode(new ConcreteFactory1());
+console.log("Client: Testing client code with the first factory type...");
+clientCode2(new ConcreteFactory1());
+console.log("");
 
-console.log('');
+// Client: Testing client code with the first factory type...
+// The result of the product B1.
+// The result of the B1 collaborating with the (The result of the product A1.)
 
-console.log('Client: Testing the same client code with the second factory type...');
-clientCode(new ConcreteFactory2());
+console.log(
+  "Client: Testing the same client code with the second factory type..."
+);
+clientCode2(new ConcreteFactory2());
+
+// Client: Testing the same client code with the second factory type...
+// The result of the product B2.
+// The result of the B2 collaborating with the (The result of the product A2.)

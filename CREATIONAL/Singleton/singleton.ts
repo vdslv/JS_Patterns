@@ -1,30 +1,34 @@
 class Singleton {
   private static instance: Singleton;
+  private count: number;
 
-  private constructor() { }
-
-  public static getInstance(): Singleton {
-    if (!Singleton.instance) {
-      Singleton.instance = new Singleton();
+  constructor() {
+    if (Singleton.instance) {
+      return Singleton.instance;
     }
-    return Singleton.instance;
+    this.count = 0;
+    Singleton.instance = this;
+    return this;
   }
 
-  public someBusinessLogic() {
+  getCount(): number {
+    return this.count;
+  }
 
+  increaseCount(): number {
+    return this.count++;
   }
 }
 
-
-function clientCode() {
-  const s1 = Singleton.getInstance();
-  const s2 = Singleton.getInstance();
+function clientCode3() {
+  const s1 = new Singleton();
+  const s2 = new Singleton();
 
   if (s1 === s2) {
-    console.log('Singleton works, both variables contain the same instance.');
+    console.log("Singleton works, both variables contain the same instance.");
   } else {
-    console.log('Singleton failed, variables contain different instances.');
+    console.log("Singleton failed, variables contain different instances.");
   }
 }
 
-clientCode(); // Singleton works, both variables contain the same instance.
+clientCode3(); // Singleton works, both variables contain the same instance.
