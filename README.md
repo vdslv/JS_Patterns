@@ -230,6 +230,8 @@ console.log(myCount1.getCount());
 </p>
 </details>
 
+<hr/>
+
 ## Structural Patterns :cactus:
 Structural patterns explain how to assemble objects and classes into larger structures while keeping these structures flexible and efficient.
 
@@ -686,6 +688,596 @@ door.open("Jack");
 door.open("Ilon");
 
 door.close();
+```
+</p>
+</details>
+
+<hr/>
+
+## Behavioral Patterns :cactus:
+Behavioral design patterns are concerned with algorithms and the assignment of responsibilities between objects.
+
+### Chain of Responsibility :wrench:
+```
+Chain of Responsibility is a behavioral design pattern that lets 
+you pass requests along a chain of handlers. Upon receiving a 
+request, each handler decides either to process the request or 
+to pass it to the next handler in the chain.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class MySum {
+  constructor(initialValue = 42) {
+    this.sum = initialValue;
+  }
+
+  add(value) {
+    this.sum += value;
+    return this;
+  }
+}
+
+const sum1 = new MySum();
+console.log(sum1.add(8).add(10).add(1).add(9).sum);
+
+const sum2 = new MySum(0);
+console.log(sum2.add(1).add(2).add(3).sum);
+```
+</p>
+</details>
+
+### Command :wrench:
+```
+Command is a behavioral design pattern that turns a request into a 
+stand-alone object that contains all information about the request. 
+This transformation lets you parameterize methods with different 
+requests, delay or queue a request’s execution, and support undoable 
+operations.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class MyMath {
+  constructor(initialValue = 0) {
+    this.num = initialValue;
+  }
+
+  square() {
+    return this.num ** 2;
+  }
+
+  cube() {
+    return this.num ** 3;
+  }
+}
+
+class Command {
+  constructor(subject) {
+    this.subject = subject;
+    this.commandsExecuted = [];
+  }
+
+  execute(command) {
+    this.commandsExecuted.push(command);
+    return this.subject[command]();
+  }
+}
+
+const x = new Command(new MyMath(2));
+
+console.log(x.execute("square"));
+console.log(x.execute("cube"));
+
+console.log(x.commandsExecuted);
+```
+</p>
+</details>
+
+### Iterator :wrench:
+```
+Iterator is a behavioral design pattern that lets you traverse 
+elements of a collection without exposing its underlying 
+representation (list, stack, tree, etc.).
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class ArrayIterator {
+  constructor(el) {
+    this.index = 0;
+    this.elements = el;
+  }
+
+  next() {
+    return this.elements[this.index++];
+  }
+
+  hasNext() {
+    return this.index < this.elements.length;
+  }
+}
+
+const autos1 = [
+  { model: "Audi", color: "black", price: "20000" },
+  { model: "BMW", color: "white", price: "30000" },
+  { model: "Tesla", color: "gray", price: "40000" },
+];
+
+const collection1 = new ArrayIterator(autos1);
+
+while (collection1.hasNext()) {
+  console.log(collection1.next());
+}
+
+class ObjectIterator {
+  constructor(el) {
+    this.index = 0;
+    this.keys = Object.keys(el);
+    this.elements = el;
+  }
+
+  next() {
+    return this.elements[this.keys[this.index++]];
+  }
+
+  hasNext() {
+    return this.index < this.keys.length;
+  }
+}
+
+const autos2 = {
+  audi: { model: "Audi", color: "black", price: "20000" },
+  bmw: { model: "BMW", color: "white", price: "30000" },
+  tesla: { model: "Tesla", color: "gray", price: "40000" },
+};
+
+const collection2 = new ObjectIterator(autos2);
+
+while (collection2.hasNext()) {
+  console.log(collection2.next());
+}
+```
+</p>
+</details>
+
+### Mediator :wrench:
+```
+Mediator is a behavioral design pattern that lets you reduce chaotic 
+dependencies between objects. The pattern restricts direct communications 
+between the objects and forces them to collaborate only via a mediator 
+object.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class User {
+  constructor(name) {
+    this.name = name;
+    this.room = null;
+  }
+
+  send(message, to) {
+    this.room.send(message, this, to);
+  }
+
+  receive(message, from) {
+    console.log(`${from.name} => ${this.name}: ${message}`);
+  }
+}
+
+class ChatRoom {
+  constructor() {
+    this.users = {};
+  }
+
+  register(user) {
+    this.users[user.name] = user;
+    user.room = this;
+  }
+
+  send(message, from, to) {
+    if (to) {
+      to.receive(message, from);
+    } else {
+      Object.keys(this.users).forEach((key) => {
+        if (this.users[key] !== from) {
+          this.users[key].receive(message, from);
+        }
+      });
+    }
+  }
+}
+
+const vlad = new User("Vladilen");
+const lena = new User("Elena");
+const igor = new User("Igor");
+
+const room = new ChatRoom();
+
+room.register(vlad);
+room.register(lena);
+room.register(igor);
+
+vlad.send("Hello!", lena);
+lena.send("Hello hello!", vlad);
+igor.send("Vsem privet");
+```
+</p>
+</details>
+
+### Memento :wrench:
+```
+Memento is a behavioral design pattern that lets you save and restore 
+the previous state of an object without revealing the details of its 
+implementation.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class Memento {
+  constructor(value) {
+    this.value = value;
+  }
+}
+
+const creator = {
+  save: (val) => new Memento(val),
+  restore: (memento) => memento.value,
+};
+
+class Caretaker {
+  constructor() {
+    this.values = [];
+  }
+
+  addMemento(memento) {
+    this.values.push(memento);
+  }
+
+  getMemento(index) {
+    return this.values[index];
+  }
+}
+
+const careTaker = new Caretaker();
+
+careTaker.addMemento(creator.save("hello"));
+careTaker.addMemento(creator.save("hello world"));
+careTaker.addMemento(creator.save("hello world!!!"));
+
+console.log(creator.restore(careTaker.getMemento(1)));
+```
+</p>
+</details>
+
+### Observer :wrench:
+```
+Observer is a behavioral design pattern that lets you define a subscription 
+mechanism to notify multiple objects about any events that happen to the 
+object they’re observing.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class Subject {
+  constructor() {
+    this.observers = [];
+  }
+
+  subscribe(observer) {
+    this.observers.push(observer);
+  }
+
+  unsubscribe(observer) {
+    this.observers = this.observers.filter((obs) => obs !== observer);
+  }
+
+  fire(action) {
+    this.observers.forEach((observer) => {
+      observer.update(action);
+    });
+  }
+}
+
+class Observer {
+  constructor(state = 1) {
+    this.state = state;
+    this.initialState = state;
+  }
+
+  update(action) {
+    switch (action.type) {
+      case "INCREMENT":
+        this.state = ++this.state;
+        break;
+      case "DECREMENT":
+        this.state = --this.state;
+        break;
+      case "ADD":
+        this.state += action.payload;
+        break;
+      default:
+        this.state = this.initialState;
+    }
+  }
+}
+
+const stream$ = new Subject();
+
+const obs1 = new Observer();
+const obs2 = new Observer(42);
+
+stream$.subscribe(obs1);
+stream$.subscribe(obs2);
+
+stream$.fire({ type: "INCREMENT" });
+stream$.fire({ type: "INCREMENT" });
+stream$.fire({ type: "DECREMENT" });
+stream$.fire({ type: "ADD", payload: 10 });
+
+console.log(obs1.state);
+console.log(obs2.state);
+```
+</p>
+</details>
+
+### State :wrench:
+```
+State is a behavioral design pattern that lets an object alter its 
+behavior when its internal state changes. It appears as if the object 
+changed its class.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class Light {
+  constructor(light) {
+    this.light = light;
+  }
+}
+
+class RedLight extends Light {
+  constructor() {
+    super("red");
+  }
+
+  sign() {
+    return "STOP";
+  }
+}
+
+class YellowLight extends Light {
+  constructor() {
+    super("yellow");
+  }
+
+  sign() {
+    return "READY";
+  }
+}
+
+class GreenLight extends Light {
+  constructor() {
+    super("green");
+  }
+
+  sign() {
+    return "GO!";
+  }
+}
+
+class TrafficLight {
+  constructor() {
+    this.states = [new RedLight(), new YellowLight(), new GreenLight()];
+    this.current = this.states[0];
+  }
+
+  change() {
+    const total = this.states.length;
+    let index = this.states.findIndex((light) => light === this.current);
+
+    if (index + 1 < total) {
+      this.current = this.states[index + 1];
+    } else {
+      this.current = this.states[0];
+    }
+  }
+
+  sign() {
+    return this.current.sign();
+  }
+}
+
+const traffic = new TrafficLight();
+console.log(traffic.sign());
+traffic.change();
+
+console.log(traffic.sign());
+traffic.change();
+
+console.log(traffic.sign());
+traffic.change();
+
+console.log(traffic.sign());
+traffic.change();
+
+console.log(traffic.sign());
+traffic.change();
+
+console.log(traffic.sign());
+traffic.change();
+
+console.log(traffic.sign());
+```
+</p>
+</details>
+
+### Strategy :wrench:
+```
+Strategy is a behavioral design pattern that lets you define a family 
+of algorithms, put each of them into a separate class, and make their 
+objects interchangeable.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+function baseStrategy(amount) {
+  return amount;
+}
+
+function premiumStrategy(amount) {
+  return amount * 0.85;
+}
+
+function platinumStrategy(amount) {
+  return amount * 0.65;
+}
+
+class AutoCart {
+  constructor(discount) {
+    this.discount = discount;
+    this.amount = 0;
+  }
+
+  checkout() {
+    return this.discount(this.amount);
+  }
+
+  setAmount(amount) {
+    this.amount = amount;
+  }
+}
+
+const baseCustomer = new AutoCart(baseStrategy);
+const premiumCustomer = new AutoCart(premiumStrategy);
+const platinumCustomer = new AutoCart(platinumStrategy);
+
+baseCustomer.setAmount(50000);
+console.log(baseCustomer.checkout()); // 50000
+
+premiumCustomer.setAmount(50000);
+console.log(premiumCustomer.checkout()); // 42500
+
+platinumCustomer.setAmount(50000);
+console.log(platinumCustomer.checkout()); // 32500
+```
+</p>
+</details>
+
+### Template Method :wrench:
+```
+Template Method is a behavioral design pattern that defines the skeleton of 
+an algorithm in the superclass but lets subclasses override specific steps 
+of the algorithm without changing its structure.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class Employee {
+  constructor(name, salary) {
+    this.name = name;
+    this.salary = salary;
+  }
+
+  responsibilities() {}
+
+  work() {
+    return `${this.name} выполняет ${this.responsibilities()}`;
+  }
+
+  getPaid() {
+    return `${this.name} имеет ЗП ${this.salary}`;
+  }
+}
+
+class Developer extends Employee {
+  constructor(name, salary) {
+    super(name, salary);
+  }
+
+  responsibilities() {
+    return "процесс создания программ";
+  }
+}
+
+class Tester extends Employee {
+  constructor(name, salary) {
+    super(name, salary);
+  }
+
+  responsibilities() {
+    return "процесс тестирования";
+  }
+}
+
+const dev = new Developer("Владилен", 100000);
+console.log(dev.getPaid());
+console.log(dev.work());
+
+const tester = new Tester("Виктория", 90000);
+console.log(tester.getPaid());
+console.log(tester.work());
+```
+</p>
+</details>
+
+### Visitor :wrench:
+```
+Visitor is a behavioral design pattern that lets you separate
+algorithms from the objects on which they operate.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class Auto {
+  accept(visitor) {
+    visitor(this);
+  }
+}
+
+class Tesla extends Auto {
+  info() {
+    return "It is a Tesla car!";
+  }
+}
+
+class Bmw extends Auto {
+  info() {
+    return "It is a BMW car!";
+  }
+}
+
+class Audi extends Auto {
+  info() {
+    return "It is an Audi car!";
+  }
+}
+
+function exportVisitor(auto) {
+  if (auto instanceof Tesla)
+    auto.export = console.log(`Exported data: ${auto.info()}`);
+  if (auto instanceof Bmw)
+    auto.export = console.log(`Exported data: ${auto.info()}`);
+  if (auto instanceof Audi)
+    auto.export = console.log(`Exported data: ${auto.info()}`);
+}
+
+const tesla = new Tesla();
+tesla.accept(exportVisitor); // Exported data: It is a Tesla car!
+
+const bmv = new Bmw();
+bmv.accept(exportVisitor); // Exported data: It is a BMW car!
 ```
 </p>
 </details>
