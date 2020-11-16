@@ -8,6 +8,8 @@ Patterns are often confused with algorithms, because both concepts describe typi
 
 An analogy to an algorithm is a cooking recipe: both have clear steps to achieve a goal. On the other hand, a pattern is more like a blueprint: you can see what the result and its features are, but the exact order of implementation is up to you.
 
+
+
 ## Creational patterns :cactus:
 These patterns provide various object creation mechanisms, which increase flexibility and reuse of existing code.
 
