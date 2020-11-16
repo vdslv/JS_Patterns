@@ -1284,5 +1284,5 @@ bmv.accept(exportVisitor); // Exported data: It is a BMW car!
 
 <hr/>
 
-###Want to know more?
-###<a href="https://refactoring.guru/design-patterns">Follow the link...</a>
+### Want to know more?
+### <a href="https://refactoring.guru/design-patterns">Follow the link...</a>
