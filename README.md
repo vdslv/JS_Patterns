@@ -228,3 +228,462 @@ console.log(myCount1.getCount());
 </p>
 </details>
 
+## Structural Patterns :cactus:
+Structural patterns explain how to assemble objects and classes into larger structures while keeping these structures flexible and efficient.
+
+### Adapter :wrench:
+```
+Adapter is a structural design pattern that allows objects with 
+incompatible interfaces to collaborate.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class Engine2 {
+  simpleInterface() {
+    console.log("Engine 2.0 - tr-tr-tr");
+  }
+}
+
+class EngineV8 {
+  complecatedInterface() {
+    console.log("Engine V8! - wroom wroom!");
+  }
+}
+
+class EngineV8Adapter {
+  constructor(engine) {
+    this.engine = engine;
+  }
+
+  simpleInterface() {
+    this.engine.complecatedInterface();
+  }
+}
+
+class Auto {
+  startEngine(engine) {
+    engine.simpleInterface();
+  }
+}
+
+const auto = new Auto();
+auto.startEngine(new Engine2()); // Engine 2.0 - tr-tr-tr
+
+auto.startEngine(new EngineV8Adapter(new EngineV8())); // Engine V8! - wroom wroom!
+```
+</p>
+</details>
+
+### Bridge :wrench:
+```
+Bridge is a structural design pattern that lets you split a large 
+class or a set of closely related classes into two separate 
+hierarchies—abstraction and implementation—which can be developed 
+independently of each other.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class Model {
+  constructor(color) {
+    this.color = color;
+  }
+}
+
+class Color {
+  constructor(type) {
+    this.type = type;
+  }
+  get() {
+    return this.type;
+  }
+}
+
+class BlackColor extends Color {
+  constructor() {
+    super("dark-black");
+  }
+}
+
+class SilbrigColor extends Color {
+  constructor() {
+    super("Silbermetallic");
+  }
+}
+
+class Audi extends Model {
+  constructor(color) {
+    super(color);
+  }
+
+  paint() {
+    return `Auto: Audi, Color: ${this.color.get()}`;
+  }
+}
+
+class Bmw extends Model {
+  constructor(color) {
+    super(color);
+  }
+
+  paint() {
+    return `Auto: Bmw, Color: ${this.color.get()}`;
+  }
+}
+
+const blackBmw = new Bmw(new BlackColor());
+console.log(blackBmw.paint());
+```
+</p>
+</details>
+
+### Composite :wrench:
+```
+Composite is a structural design pattern that lets you compose 
+objects into tree structures and then work with these structures 
+as if they were individual objects.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class Equipment {
+	getPrice() {
+		return this.price || 0;
+	}
+
+	getName() {
+		return this.name;
+	}
+
+	setName(name) {
+		this.name = name;
+	}
+
+	setPrice(price) {
+		this.price = price;
+	}
+}
+
+class Engine extends Equipment {
+	constructor() {
+		super();
+		this.setName('Engine');
+		this.setPrice(800);
+	}
+}
+
+class Body extends Equipment {
+	constructor() {
+		super();
+		this.setName('Body');
+		this.setPrice(3000);
+	}
+}
+
+class Tools extends Equipment {
+	constructor() {
+		super();
+		this.setName('Tools');
+		this.setPrice(4000);
+	}
+}
+
+class Composite extends Equipment {
+	constructor() {
+		super();
+		this.equipments = [];
+	}
+
+	add(equipment) {
+		this.equipments.push(equipment);
+	}
+
+	getPrice() {
+		return this.equipments
+			.map(equipment => equipment.getPrice())
+			.reduce((a, b) => a + b);
+	}
+}
+
+class Car extends Composite {
+	constructor() {
+		super();
+		this.setName('Audi');
+	}
+}
+
+const myCar = new Car();
+
+myCar.add(new Engine());
+myCar.add(new Body());
+myCar.add(new Tools());
+
+console.log(`${myCar.getName()} price is ${myCar.getPrice()}`);
+```
+</p>
+</details>
+
+### Decorator :wrench:
+```
+Decorator is a structural design pattern that lets you attach 
+new behaviors to objects by placing these objects inside special 
+wrapper objects that contain the behaviors.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class Car {
+  constructor() {
+    this.price = 10000;
+    this.model = "Car";
+  }
+
+  getPrice() {
+    return this.price;
+  }
+
+  getDescription() {
+    return this.model;
+  }
+}
+
+class Tesla extends Car {
+  constructor() {
+    super();
+    this.price = 25000;
+    this.model = "Tesla";
+  }
+}
+
+class Autopilot {
+  constructor(car) {
+    this.car = car;
+  }
+
+  getPrice() {
+    return this.car.getPrice() + 5000;
+  }
+
+  getDescription() {
+    return `${this.car.getDescription()} with autopilot`;
+  }
+}
+
+class Parktronic {
+  constructor(car) {
+    this.car = car;
+  }
+
+  getPrice() {
+    return this.car.getPrice() + 3000;
+  }
+
+  getDescription() {
+    return `${this.car.getDescription()} with parktronic`;
+  }
+}
+
+let tesla1 = new Tesla();
+tesla1 = new Autopilot(tesla1);
+tesla1 = new Parktronic(tesla1);
+console.log(tesla1.getPrice(), tesla1.getDescription()); // 33000 Tesla with autopilot with parktronic
+
+let tesla2 = new Tesla();
+tesla2 = new Autopilot(tesla2);
+console.log(tesla2.getPrice(), tesla2.getDescription()); // 30000 Tesla with autopilot
+```
+</p>
+</details>
+
+### Facade :wrench:
+```
+Facade is a structural design pattern that provides a simplified 
+interface to a library, a framework, or any other complex set of 
+classes.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class Сonveyor {
+  setBody() {
+    console.log("Body set!");
+  }
+
+  getEngine() {
+    console.log("Dismantle Engine!");
+  }
+
+  setEngine() {
+    console.log("Engine set!");
+  }
+
+  getInterior() {
+    console.log("Dismantle Exterior!");
+  }
+
+  setInterior() {
+    console.log("Exterior added!");
+  }
+
+  changeInterior() {
+    console.log("Update interior!");
+  }
+
+  setExterior() {
+    console.log("Added interior!");
+  }
+
+  setWheels() {
+    console.log("Wheels!");
+  }
+
+  addElectronics() {
+    console.log("Added electronics!");
+  }
+
+  paint() {
+    console.log("Car painted!");
+  }
+}
+
+class СonveyorFacade {
+  constructor(car) {
+    this.car = car;
+  }
+
+  assembleCar() {
+    this.car.setBody();
+    this.car.setEngine();
+    this.car.setInterior();
+    this.car.setExterior();
+    this.car.setWheels();
+    this.car.addElectronics();
+    this.car.paint();
+  }
+
+  changeEngine() {
+    this.car.getEngine();
+    this.car.setEngine();
+  }
+
+  changeInterior() {
+    this.car.getInterior();
+    this.car.setInterior();
+  }
+}
+
+const conveyor = new СonveyorFacade(new Сonveyor());
+
+let car = conveyor.assembleCar();
+console.log();
+
+car = conveyor.changeEngine();
+console.log();
+
+car = conveyor.changeInterior();
+```
+</p>
+</details>
+
+### Flyweight :wrench:
+```
+Flyweight is a structural design pattern that lets you fit more 
+objects into the available amount of RAM by sharing common parts 
+of state between multiple objects instead of keeping all of the 
+data in each object.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class Auto {
+  constructor(model) {
+    this.model = model;
+  }
+}
+
+class AutoFactory {
+  constructor() {
+    this.models = {};
+  }
+
+  create(name) {
+    let model = this.models[name];
+    if (model) return model;
+    this.models[name] = new Auto(name);
+    return this.models[name];
+  }
+}
+
+const factory = new AutoFactory();
+
+const bmw = factory.create("BMW");
+const bmw2 = factory.create("BMW");
+const audi = factory.create("AUDI");
+const tesla = factory.create("TESLA");
+const tesla2 = factory.create("TESLA");
+
+console.log(factory.models);
+```
+</p>
+</details>
+
+### Proxy :wrench:
+```
+Proxy is a structural design pattern that lets you provide a substitute 
+or placeholder for another object. A proxy controls access to the 
+original object, allowing you to perform something either before or 
+after the request gets through to the original object.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class CarAccess {
+  open() {
+    console.log("Opening car door");
+  }
+
+  close() {
+    console.log("Closing the car door");
+  }
+}
+
+class SecuritySystem {
+  constructor(door) {
+    this.door = door;
+  }
+
+  open(password) {
+    if (this.authenticate(password)) {
+      this.door.open();
+    } else {
+      console.log("Access denied!");
+    }
+  }
+
+  authenticate(password) {
+    return password === "Ilon";
+  }
+
+  close() {
+    this.door.close();
+  }
+}
+
+const door = new SecuritySystem(new CarAccess());
+
+door.open("Jack");
+
+door.open("Ilon");
+
+door.close();
+```
+</p>
+</details>
