@@ -7,7 +7,8 @@ These patterns provide various object creation mechanisms, which increase flexib
 
 ### Abstract Factory
 ```
-Abstract Factory is a creational design pattern that lets you produce families of related objects without specifying their concrete classes.
+Abstract Factory is a creational design pattern that lets you produce 
+families of related objects without specifying their concrete classes.
 ```
 <details><summary><b>JavaScript Example</b></summary>
 <p>
@@ -45,3 +46,39 @@ console.log(myCar.info());
 ```
 </p>
 </details>
+
+### Factory method
+```
+Factory Method is a creational design pattern that provides an interface 
+for creating objects in a superclass, but allows subclasses to alter the 
+type of objects that will be created.
+```
+<details><summary><b>JavaScript Example</b></summary>
+<p>
+    
+```js
+class Bmw {
+  constructor(model, price, maxSpeed) {
+    this.model = model;
+    this.price = price;
+    this.maxSpeed = maxSpeed;
+  }
+}
+
+class BmwFactory {
+  static create(type) {
+    if (type === "X5") return new Bmw(type, 108000, 300);
+    if (type === "X6") return new Bmw(type, 111000, 320);
+  }
+}
+
+const x5 = BmwFactory.create("X5");
+const x6 = BmwFactory.create("X6");
+
+console.log(x5);
+
+console.log(x6);
+```
+</p>
+</details>
+
