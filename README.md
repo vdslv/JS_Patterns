@@ -1,4 +1,4 @@
-# DESIGN PATTERNS
+# DESIGN PATTERNS :see_no_evil:
 
 <b>Design patterns</b> are typical solutions to commonly occurring problems in software design. They are like pre-made blueprints that you can customize to solve a recurring design problem in your code.
 
@@ -8,10 +8,10 @@ Patterns are often confused with algorithms, because both concepts describe typi
 
 An analogy to an algorithm is a cooking recipe: both have clear steps to achieve a goal. On the other hand, a pattern is more like a blueprint: you can see what the result and its features are, but the exact order of implementation is up to you.
 
-## Creational patterns
+## Creational patterns :cactus:
 These patterns provide various object creation mechanisms, which increase flexibility and reuse of existing code.
 
-### Abstract Factory
+### Abstract Factory :wrench:
 ```
 Abstract Factory is a creational design pattern that lets you produce 
 families of related objects without specifying their concrete classes.
@@ -53,7 +53,7 @@ console.log(myCar.info());
 </p>
 </details>
 
-### Factory method
+### Factory method :wrench:
 ```
 Factory Method is a creational design pattern that provides an interface 
 for creating objects in a superclass, but allows subclasses to alter the 
@@ -88,7 +88,7 @@ console.log(x6);
 </p>
 </details>
 
-### Builder
+### Builder :wrench:
 ```
 Builder is a creational design pattern that lets you construct complex 
 objects step by step. The pattern allows you to produce different 
@@ -145,7 +145,7 @@ console.log(newCar); // { autoPilot: undefined, parktronic: undefined, signaling
 </p>
 </details>
 
-### Prototype
+### Prototype :wrench:
 ```
 Prototype is a creational design pattern that lets you copy 
 existing objects without making your code dependent on their 
@@ -176,7 +176,7 @@ console.log(tesla1, tesla1Clone);
 </p>
 </details>
 
-### Singleton
+### Singleton :wrench:
 ```
 Singleton is a creational design pattern that lets you ensure that 
 a class has only one instance, while providing a global access 
