@@ -150,8 +150,6 @@ console.log(newCar); // { autoPilot: undefined, parktronic: undefined, signaling
 Prototype is a creational design pattern that lets you copy 
 existing objects without making your code dependent on their 
 classes.
-
-
 ```
 <details><summary><b>JavaScript Example</b></summary>
 <p>
@@ -183,8 +181,6 @@ console.log(tesla1, tesla1Clone);
 Singleton is a creational design pattern that lets you ensure that 
 a class has only one instance, while providing a global access 
 point to this instance.
-
-
 ```
 <details><summary><b>JavaScript Example</b></summary>
 <p>
